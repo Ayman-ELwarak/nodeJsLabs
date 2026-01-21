@@ -1,13 +1,18 @@
 const PostService = require("../services/posts");
+const UserService = require("../services/users");
 const APIError = require("../utils/APIError");
 
 const createPost = async (req, res) => {
+    const userId = await UserService.getUserById(req.body.userId);
+    if(!userId){
+        throw new APIError('User Not Defined', 400);
+    }
     const post = await PostService.createPost(req.body);
     res.status(201).json({ message: "Post created successfully", data: post })
 }
 
 const getAllPosts = async (req, res) => {
-    const {posts, pagenation} = await PostService.getAllPosts(req.query);
+    const {posts, pagenation} = await PostService.getAllPosts(req.query, req.user.userId);
     res.json({
         message: "Posts fetched successfully", 
         data: posts, 
@@ -28,7 +33,21 @@ const getPostById = async (req, res) =>{
 
 const updatePost = async (req, res) => {
     const {id} = req.params;
+
+    const author = await PostService.getPostById(id);
+    if(!author){
+        throw new APIError("Post not found", 404);
+    }
+    const authorId = author.userId;
+    console.log(authorId);
     
+    const userId = req.user.userId;
+    console.log(userId);
+    
+    if(userId !== authorId.toString()){
+        throw new APIError("Can't Update", 404);
+    }
+
     const post = await PostService.updatePost(id, req.body);
     if(!post){
         throw new APIError("Post not found", 404);
@@ -41,6 +60,20 @@ const updatePost = async (req, res) => {
 
 const deletePost = async (req, res) =>{ 
     const {id} = req.params;
+
+    const author = await PostService.getPostById(id);
+    if(!author){
+        throw new APIError("Post not found", 404);
+    }
+    const authorId = author.userId;
+    console.log(authorId);
+    
+    const userId = req.user.userId;
+    console.log(userId);
+    
+    if(userId !== authorId.toString()){
+        throw new APIError("Can't Delete", 404);
+    }
 
     const deletedPost = await PostService.deletePost(id);
 

@@ -10,8 +10,8 @@ const createUserBody = Joi.object({
     age: Joi.number().min(18).max(150).required(),
 }).required();
 
-const createUserSchema = {
+const signUpSchema = {
     body: createUserBody,
 }
 
-module.exports = createUserSchema;
+module.exports = signUpSchema

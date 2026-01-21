@@ -1,9 +1,14 @@
 const UserService = require("../services/users");
 const APIError = require("../utils/APIError");
 
-const createUser = async (req, res) => {
-    const user = await UserService.createUser(req.body);
+const signUp = async (req, res) => {
+    const user = await UserService.signUp(req.body);
     res.status(201).json({ message: "User created successfully", data: user });
+}
+
+const signIn = async (req, res) => {
+    const data = await UserService.signIn(req.body);
+    res.status(200).json({ message: "Signed in successfully", data: data });
 }
 
 const getAllUsers = async (req, res) => {
@@ -47,4 +52,4 @@ const deleteUser = async (req, res) =>{
      res.json({ message: "User deleted successfully" });
 }
 
-module.exports = {createUser, getAllUsers, getUserById, updateUser, deleteUser};
+module.exports = {signUp, signIn, getAllUsers, getUserById, updateUser, deleteUser};

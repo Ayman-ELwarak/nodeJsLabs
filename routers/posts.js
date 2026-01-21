@@ -2,17 +2,18 @@ const express = require('express');
 const postsController = require('../controllers/posts');
 const validate = require('../middlewares/validate');
 const schema = require('../schemas')
+const authenticate = require('../middlewares/authenticate')
 
 const router = express.Router();
 
 router.post('/', validate(schema.createPostSchema), postsController.createPost);
 
-router.get('/', postsController.getAllPosts);
+router.get('/', authenticate, postsController.getAllPosts);
 
 router.get('/:id', postsController.getPostById);
 
-router.patch('/:id', postsController.updatePost)
+router.patch('/:id', authenticate, postsController.updatePost)
 
-router.delete('/:id', postsController.deletePost);
+router.delete('/:id', authenticate, postsController.deletePost);
 
 module.exports = router;
