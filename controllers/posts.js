@@ -3,11 +3,7 @@ const UserService = require("../services/users");
 const APIError = require("../utils/APIError");
 
 const createPost = async (req, res) => {
-    const userId = await UserService.getUserById(req.body.userId);
-    if(!userId){
-        throw new APIError('User Not Defined', 400);
-    }
-    const post = await PostService.createPost(req.body);
+    const post = await PostService.createPost(req.body, req.user.userId);
     res.status(201).json({ message: "Post created successfully", data: post })
 }
 

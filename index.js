@@ -1,22 +1,36 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const helmet = require("helmet");
+const { sanitizeMongoInput } = require("express-v5-mongo-sanitize");
+const { xss } = require('express-xss-sanitizer');
+const hpp = require('hpp');
 
 const userRouter = require('./routers/users');
 const postRouter = require('./routers/posts');
+const donationRouter = require("./routers/donations");
 const errorHandler = require('./middlewares/errorHandler');
 
 
 require('dotenv').config();
+
+const rateLimiter = require('./middlewares/rateLimiter');
 
 const app = express();
 app.use(express.json());
 
 app.use('/users', userRouter);
 app.use('/posts', postRouter);
+app.use('/donation', donationRouter);
 
 app.use(errorHandler);
 app.use(cors());
+app.use(helmet());
+app.use(sanitizeMongoInput);
+app.use(xss());
+app.use(hpp());
+app.use(rateLimiter);
+
 
 
 const PORT = Number(process.env.PORT);

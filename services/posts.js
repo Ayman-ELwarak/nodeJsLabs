@@ -1,8 +1,9 @@
 const Post = require('../models/posts');
 const User = require('../models/users');
 
-const createPost = async (postData) => {
-    const post = await Post.create(postData);
+const createPost = async (postData, authorId) => {
+    const post = await Post.create({...postData, userId: authorId});
+    console.log(post);
     return post;
 }
 

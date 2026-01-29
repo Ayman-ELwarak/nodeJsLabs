@@ -6,11 +6,11 @@ const authenticate = require('../middlewares/authenticate')
 
 const router = express.Router();
 
-router.post('/', validate(schema.createPostSchema), postsController.createPost);
+router.post('/', authenticate, validate(schema.createPostSchema), postsController.createPost);
 
 router.get('/', authenticate, postsController.getAllPosts);
 
-router.get('/:id', postsController.getPostById);
+router.get('/:id', authenticate, postsController.getPostById);
 
 router.patch('/:id', authenticate, postsController.updatePost)
 

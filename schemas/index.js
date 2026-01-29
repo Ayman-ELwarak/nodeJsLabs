@@ -3,5 +3,6 @@ module.exports = {
     signInSchema: require('./singInSchema'),
     getAllUsersSchema: require('./getAllUsersSchema'),
     updateUserSchema: require('./updateUserSchema'),
-    createPostSchema: require('./createPostSchema')
+    createPostSchema: require('./createPostSchema'),
+    donations: require('./donation')
 }

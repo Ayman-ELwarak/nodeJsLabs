@@ -6,7 +6,7 @@ const createUserBody = Joi.object({
         'string.content': 'Invalid content',
     }),
     author: Joi.string().min(3).max(30).required(),
-    userId: Joi.string().hex().length(24).required(),
+    userId: Joi.string().hex().length(24).default(''),
     tags: Joi.array().items(Joi.string()),
     published: Joi.boolean().default(false),
     likes: Joi.number().default(0)

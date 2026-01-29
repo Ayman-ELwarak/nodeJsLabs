@@ -8,7 +8,7 @@ const postSchema = new mongoose.Schema(
         userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
-            required: true
+            default: '',
         },
         tags: {type: [String]},
         published: {type: Boolean, default: false},
